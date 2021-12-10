@@ -1,0 +1,14 @@
+<Recent>
+  <Input>
+    <InputPair Text="The" Sum="289" />
+    <InputPair Text="quick" Sum="541" />
+    <InputPair Text="brown" Sum="552" />
+    <InputPair Text="fox." Sum="379" />
+  </Input>
+  <Output>
+    <OutputPair Text="brown" Sum="552" />
+    <OutputPair Text="quick" Sum="541" />
+    <OutputPair Text="fox." Sum="379" />
+    <OutputPair Text="The" Sum="289" />
+  </Output>
+</Recent>

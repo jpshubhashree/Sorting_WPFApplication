@@ -1,0 +1,114 @@
+﻿<Window x:Class="ASCIISorting.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        
+        xmlns:local="clr-namespace:ASCIISorting"
+        
+        mc:Ignorable="d"
+        Title="ASCIISorting" Height="773" Width="756" >
+    <Window.CommandBindings>
+        <CommandBinding Command="local:CustomCommands.Exit" CanExecute="ExitCommand_CanExecute" Executed="ExitCommand_Executed" />
+        <CommandBinding Command="local:CustomCommands.Sort" CanExecute="SortCommand_CanExecute" Executed="SortCommand_Executed" />
+        <CommandBinding Command="local:CustomCommands.Reverse" CanExecute="ReverseCommand_CanExecute" Executed="ReverseCommand_Executed" />
+        <CommandBinding Command="local:CustomCommands.Open" CanExecute="OpenCommand_CanExecute" Executed="OpenCommand_Executed" />
+        <CommandBinding Command="local:CustomCommands.Save" CanExecute="SaveCommand_CanExecute" Executed="SaveCommand_Executed" />
+    </Window.CommandBindings>
+    <StackPanel Margin="0,0,0,20">
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Open" Command="local:CustomCommands.Open" />
+                    <MenuItem Header="_Save" Name="MSave" Command="local:CustomCommands.Save"  CommandTarget="{Binding ElementName=BSave}" IsEnabled="False"/>
+                    <MenuItem Header="_Recent" Name="MRecent" Click= "OnRecentMenuItemClick" />
+                    <Separator />
+                    <MenuItem Command="local:CustomCommands.Exit" />
+                </MenuItem>
+                <MenuItem Header="_Edit">
+                    <MenuItem Header="_Cut" Command="ApplicationCommands.Cut" CommandTarget="{Binding ElementName=inputTextBox}"/>
+                    <MenuItem Header="_Copy" Command="ApplicationCommands.Copy" CommandTarget="{Binding ElementName=inputTextBox}"/>
+                    <MenuItem Header="_Paste" Command="ApplicationCommands.Paste" CommandTarget="{Binding ElementName=inputTextBox}"/>
+                </MenuItem>
+                <MenuItem Header="_Help">
+                    <MenuItem Header="_About" Click="OnHelpMenuItemClick" />
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+        <DockPanel>
+            <ToolBarTray>
+                <ToolBar Height="30" HorizontalAlignment="Left">
+                    <Button Command = "local:CustomCommands.Open" ToolTip = "Import file to sort">
+                        <Image Source="..\Icons\Open.ico"  Width="20" Height="20"/>
+                    </Button>
+                    <Button Name="TbSave" Command="local:CustomCommands.Save" ToolTip="Save Output" IsEnabled="False" >
+                        <Image Source="..\Icons\Save.ico"  Width="20" Height="20"/>
+                    </Button>
+                    <Button Command = "ApplicationCommands.Cut" ToolTip="Cut" CommandTarget= "{Binding ElementName=inputTextBox}" >
+                        <Image Source="..\Icons\Cut.ico"  Width="20" Height="20"/>
+                    </Button>
+                    <Button Command = "ApplicationCommands.Copy" ToolTip = "Copy" CommandTarget="{Binding ElementName=inputTextBox}" >
+                        <Image Source="..\Icons\Copy.ico"  Width="20" Height="20"/>
+                    </Button>
+                    <Button Command="ApplicationCommands.Paste" ToolTip="Paste" CommandTarget="{Binding ElementName=inputTextBox}" >
+                        <Image Source="..\Icons\Past.ico"  Width="20" Height="20"/>
+                    </Button>
+                    <Button  Name="TbSort" Command = "local:CustomCommands.Sort" ToolTip="Sort" IsEnabled="False" >
+                        <Image Source="..\Icons\Sort.ico"  Width="20" Height="20"/>
+                    </Button>
+                    <Button  Name="TbReverse" Command = "local:CustomCommands.Reverse" ToolTip="Display output text in reverse order" IsEnabled="False" >
+                        <Image Source="..\Icons\Reverse.ico"  Width="20" Height="20"/>
+                    </Button>
+                    <Button Command = "local:CustomCommands.Exit" ToolTip="Exit">
+                        <Image Source="..\Icons\Exit.ico"  Width="20" Height="20"/>
+                    </Button>
+                </ToolBar>
+            </ToolBarTray>
+        </DockPanel>
+        <Label FontWeight="Bold" Margin="10,0,0,0" FontSize="18">Input</Label>
+        <TextBox Name="inputTextBox" Margin="10,0,10,10" AcceptsReturn="True" MouseDown="OnInputTextBoxMouseDown" Height="200" TextWrapping="Wrap"
+                 VerticalScrollBarVisibility="Visible" SpellCheck.IsEnabled="True"  TextChanged="OnInputTextChanged" ForceCursor="True" OpacityMask="Black" >
+            <TextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0" />
+                </Style>
+            </TextBox.Resources>
+        </TextBox>
+        <Button Name="BSort" HorizontalAlignment = "Right" Height="40" Width="80"
+                Margin ="0,0,30,0" Padding="5,0,5,2" Command="local:CustomCommands.Sort" IsEnabled="False">Sort</Button>
+
+        <Label FontWeight="Bold" Margin="10,0,0,0" FontSize="18">Output</Label>
+        <DockPanel Margin="10">
+            <TextBox Name="outputTextBox"  Text="Sorted text will be displayed here" Margin="5,0,5,0" 
+                     VerticalScrollBarVisibility="Visible" TextWrapping="Wrap"  IsReadOnly="True" Height="200" TextChanged="OnOutputTextPopulated" />
+        </DockPanel>
+        <Grid Height="66">
+            <Button Name="BSave" HorizontalAlignment = "Right" Height="40" Width="80" Margin ="0,0,120,20" Padding="5,0,5,2" Command="local:CustomCommands.Save" IsEnabled="False">Save Output</Button>
+            <Button Name="BCancel"  Command="local:CustomCommands.Exit" HorizontalAlignment = "Right" Height="40" Width="80" Margin ="0,0,30,20" Padding="5,0,5,2" IsEnabled="True">Cancel</Button>
+        </Grid>
+        <DockPanel>
+            <StatusBar DockPanel.Dock="Bottom" Height="37" >
+                <StatusBar.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid Height="34">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="100" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+                </StatusBar.ItemsPanel>
+                <StatusBarItem Margin="0,0,-96,7" Height="27" VerticalAlignment="Bottom">
+                    <TextBlock Name="lblCursorPosition" />
+                </StatusBarItem>
+                <StatusBarItem Grid.Column="4" Margin="-226,0,0,0">
+                    <ProgressBar Name="progressBar" Width="307" Height="24" Minimum="0" Maximum="100"/>
+                </StatusBarItem>
+            </StatusBar>
+        </DockPanel>
+    </StackPanel>
+</Window>
+
